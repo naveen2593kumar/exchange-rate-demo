@@ -1,0 +1,9 @@
+.form-inline-error {
+  font-size: 14px;
+  color: red;
+  margin-bottom: 16px;
+}
+
+.form-field.MuiTextField-root {
+  margin-bottom: 16px;
+}

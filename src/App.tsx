@@ -1,26 +1,54 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { Component } from 'react';
+import classes from './App.module.css';
+import ExchangeRateConverter from './components/exchange-rate-converter/ExchangeRateConverter';
+import ExchangeRateTrend from './components/exchange-rate-trend/ExchangeRateTrend';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+// This can be moved to a separate definition file App.d.ts
+interface AppState {
+  fromCurrency: string,
+  toCurrency: string,
+}
+
+class App extends Component<any, AppState> {
+  constructor(props: any) {
+    super(props);
+
+    // This can be replaced with ContextAPI or Redux but that would be an additonal overhead for small example
+    this.state = {
+      fromCurrency: '',
+      toCurrency: '',
+    }
+
+    this.updateCurrencies = this.updateCurrencies.bind(this);
+  }
+
+  // Callback passed to child, updating the currencies
+  updateCurrencies(fromCurrency: string, toCurrency: string) {
+    this.setState({
+      fromCurrency,
+      toCurrency,
+    });
+  }
+
+  render() {
+    return (
+      <div className={classes.wrapper} >
+        <div className={classes['form-box']} data-testid="exchangeRateConverter">
+          <ExchangeRateConverter
+            fromCurrency={this.state.fromCurrency}
+            toCurrency={this.state.toCurrency}
+            updateCurrencies={this.updateCurrencies}
+          />
+        </div>
+        <div className={classes['chart-box']} data-testid="exchangeRateTrend">
+          <ExchangeRateTrend
+            fromCurrency={this.state.fromCurrency}
+            toCurrency={this.state.toCurrency}
+          />
+        </div>
+      </div>
+    );
+  }
 }
 
 export default App;
